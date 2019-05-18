@@ -17,10 +17,11 @@ public class prueba {
 		try {
 			Connection conexion = BaseDatos.crearConexion();
 			//insertar(conexion,"persona"); 
-			//eliminar(conexion,"persona","nombre","Alfredo");
+			//System.out.println("Las cosas salieron bien");
+			//eliminar(conexion,"persona","nombre","Braian");
 			mostrarElemento(conexion,"persona");
-			update(conexion,"persona", "nombre", "idpersona", 1234,  "Esteban" );
-			mostrarElemento(conexion,"persona");
+			//update(conexion,"persona", "nombre", "idpersona", 1234,  "Esteban" );
+			//mostrarElemento(conexion,"persona");
 			
 			
 		} catch (ClassNotFoundException e) {
@@ -44,6 +45,7 @@ public class prueba {
 	}
 	
 	@SuppressWarnings("deprecation")
+	
 	static void insertar(Connection conexion,String tabla) throws SQLException {
 		String columnas="";
 		String values="";
@@ -79,6 +81,7 @@ public class prueba {
 				int anio=90,mes=1,dia=1;
 				
 				for(int j=0;j<3;j++) {
+					
 					System.out.println("inserte valor numerico para "+col[i]);
 					System.out.println(fecha[j]);
 					int numero=lector.nextInt();
@@ -104,11 +107,13 @@ public class prueba {
 				}
 				declaracion.setBoolean(i+1,b);
 			}
-
+			System.out.println(i);
+			if(i==tipos.length-1) {
+				break;
+			}
 		}
-		lector.close();
+
 		declaracion.executeUpdate();
-		return;
 
 	}
 	
@@ -129,6 +134,18 @@ public class prueba {
 		PreparedStatement declaracion = conexion.prepareStatement(comando);
 		declaracion.setString(1,nuevoValor);
 		declaracion.setInt(2,valorAmodificar);
+		int resultado=declaracion.executeUpdate();
+		if(resultado>0) {
+			JOptionPane.showMessageDialog(null, "Se ha actualizado correctamente");
+		}
+	}
+	
+	static void update(Connection conexion,String tabla, String columna1, String columna2, String valorAmodificar, String nuevoValor ) throws SQLException {
+		
+		String comando = " Update "+tabla+" set "+columna1+"=? where "+columna2+"=?";
+		PreparedStatement declaracion = conexion.prepareStatement(comando);
+		declaracion.setString(1,nuevoValor);
+		declaracion.setString(2,valorAmodificar);
 		int resultado=declaracion.executeUpdate();
 		if(resultado>0) {
 			JOptionPane.showMessageDialog(null, "Se ha actualizado correctamente");
